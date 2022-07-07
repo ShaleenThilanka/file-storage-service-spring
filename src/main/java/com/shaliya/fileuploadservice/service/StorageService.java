@@ -1,4 +1,4 @@
-package com.javatechie.s3.service;
+package com.shaliya.fileuploadservice.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -36,10 +36,13 @@ public class StorageService {
 
   public byte[] downloadFile(String fileName) {
     S3Object s3Object = s3Client.getObject(bucketName, fileName);
+    System.out.println(s3Object);
     S3ObjectInputStream inputStream = s3Object.getObjectContent();
     try {
       byte[] content = IOUtils.toByteArray(inputStream);
+      System.out.println(content);
       return content;
+
     } catch (IOException e) {
       e.printStackTrace();
     }
