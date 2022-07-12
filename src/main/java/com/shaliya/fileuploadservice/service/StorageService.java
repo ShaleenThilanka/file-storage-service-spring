@@ -1,6 +1,7 @@
 package com.shaliya.fileuploadservice.service;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
@@ -28,15 +29,16 @@ public class StorageService {
   public String uploadFile(MultipartFile file) {
     File fileObj = convertMultiPartFileToFile(file);
     String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-    s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObj));
+    s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObj).withCannedAcl(CannedAccessControlList.PublicRead));
     fileObj.delete();
-    return "File uploaded : " + fileName;
+    return "File uploaded : " + s3Client.getUrl(bucketName, fileName);
   }
 
 
   public byte[] downloadFile(String fileName) {
-    S3Object s3Object = s3Client.getObject(bucketName, fileName);
-    System.out.println(s3Object);
+    String name = "https://visco-image-upload-sample.s3.us-east-2.amazonaws.com/1657631482781_Screenshot%20from%202022-02-14%2021-50-46.png";
+    S3Object s3Object = s3Client.getObject(bucketName, name);
+    System.out.println(s3Object.getObjectContent());
     S3ObjectInputStream inputStream = s3Object.getObjectContent();
     try {
       byte[] content = IOUtils.toByteArray(inputStream);

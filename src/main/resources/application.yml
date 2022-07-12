@@ -1,8 +1,8 @@
 cloud:
   aws:
     credentials:
-      access-key: AKIA53BN34G6VHLDQMEB
-      secret-key: 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
+      access-key: AKIA53BN34G64OHIQRBI
+      secret-key: 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
     region:
       static: us-east-2
     stack:
@@ -10,7 +10,7 @@ cloud:
 
 application:
   bucket:
-    name: visco-image-upload-sample
+    name: my-sample-shaliya
 
 
 #spring:
