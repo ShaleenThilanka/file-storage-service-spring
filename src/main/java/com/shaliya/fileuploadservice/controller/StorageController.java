@@ -9,9 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
@@ -24,7 +21,10 @@ public class StorageController {
   private StorageService service;
 
 
-
+  @PostMapping("/upload")
+  public ResponseEntity<String> uploadFile(@RequestParam(value = "file") MultipartFile file) {
+    return new ResponseEntity<>(service.uploadFile(file), HttpStatus.OK);
+  }
 
   @PostMapping("/multiple-upload")
   public ResponseEntity<List<URL>> uploadMultipleFile(@RequestParam(value = "file") List<MultipartFile> file) {

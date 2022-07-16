@@ -29,7 +29,13 @@ public class StorageService {
   @Autowired
   private AmazonS3 s3Client;
 
-
+  public String uploadFile(MultipartFile file) {
+    File fileObj = convertMultiPartFileToFile(file);
+    String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+    s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObj).withCannedAcl(CannedAccessControlList.PublicRead));
+    fileObj.delete();
+    return "File uploaded : " + s3Client.getUrl(bucketName, fileName);
+  }
   public List<URL> uploadMultipleFile(List<MultipartFile> file) {
     File fileObj;
     List<URL> returnImageList =new ArrayList<>();
